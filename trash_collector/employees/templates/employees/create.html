@@ -1,0 +1,15 @@
+{% extends 'employees\employee_base.html' %}
+
+{% block title %}Employee Account Creation{% endblock %}
+
+{% block content %}
+
+    <form action ="{% url 'employees:create' %}", method="POST">
+        {% csrf_token %}
+        First Name: <input type="text", name="first_name", id="first_name"><br />
+        Last Name: <input type="text", name="last_name", id="last_name"><br />
+        Zip Code: <input type="text", name="zip_code", id="zip_code"><br />
+        <input type="submit" value="Create Account!">
+    </form>
+    
+{% endblock %}

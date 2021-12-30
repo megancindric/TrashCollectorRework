@@ -1,0 +1,23 @@
+{% extends 'employees\employee_base.html' %}
+
+{% block title %} Customer Profile Edit {% endblock %}
+
+{% block header %} Update Your Information {% endblock %}
+
+{% block content %}
+<br />
+<form action="{% url 'employees:edit_profile' %}" method="post">
+    {% csrf_token %}
+    First Name: <input type="text" name="first_name" id="first_name" value="{{logged_in_employee.first_name}}">
+    <br />
+    <br />
+    Last Name: <input type="text" name="last_name" id="last_name" value="{{logged_in_employee.last_name}}">
+    <br />
+    <br />
+    Zip Code: <input type="text" name="zip_code" id="zip_code" value="{{logged_in_employee.zip_code}}">
+    <br />
+    <br />
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

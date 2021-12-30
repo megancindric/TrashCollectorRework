@@ -1,0 +1,86 @@
+{% extends 'employees\employee_base.html' %}
+
+{% block title %}{% block header %} Employee Home {% endblock %}{% endblock %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+
+  <h4>Today's Pickups for {{logged_in_employee.first_name}}</h4>
+  <table>
+    <tr>
+      <th>Customer</th>
+      <th>Zip Code</th>
+      <th>Balance</th>
+      <th>View Profile</th>
+      <th>Confirm Pickup</th>
+    </tr>
+    {% for customer in matching_customers %}
+    <tr>
+      <td>{{customer.name}}</td>
+      <td>{{customer.zip_code}}</td>
+      <td>{{customer.balance}}</td>
+      <td><a class="btn btn-sm btn-outline-success" href="{% url 'employees:customer_profile' customer.id %}">View Profile</a>
+      </td>
+      <td><a class="btn btn-sm btn-outline-success" href="{% url 'employees:confirm_pickup' customer.id %}">Confirm Pickup</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</br>
+</br>
+
+  <h4>Today's One-Time Pickups</h4>
+  <table>
+    <tr>
+      <th>Customer</th>
+      <th>Zip Code</th>
+      <th>Balance</th>
+      <th>View Profile</th>
+      <th>Confirm Pickup</th>
+    </tr>
+    {% for customer in customer_onetime_pickup %}
+    <tr>
+      <td>{{customer.name}}</td>
+      <td>{{customer.zip_code}}</td>
+      <td>{{customer.balance}}</td>
+      <td><a class="btn btn-sm btn-outline-success" href="{% url 'employees:customer_profile' customer.id %}">View Profile</a>
+      </td>
+      <td><a class="btn btn-sm btn-outline-success" href="{% url 'employees:confirm_pickup' customer.id %}">Confirm Pickup</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</br>
+</br>
+
+  <div id="map" class="map"></div>
+  {% else %}
+    <p>You are at the employee index, but you are not logged in.</p>
+    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'accounts:register' %}">Sign Up</a>
+  {% endif %}
+{% endblock %}
+
+{% block footercontent %}
+<script async
+src="https://maps.googleapis.com/maps/api/js?v=3&key=APIKEYHERE&callback=initMap">
+</script>
+<script>
+    function initMap() {
+    var options = {
+        center: {{employee_lat_lng | safe}},
+        zoom: 14
+    };
+    var customer_geocodes = {{customer_geocodes | safe}}
+    console.log(customer_geocodes)
+      const map = new google.maps.Map(document.getElementById("map"), options);
+      for (let i=0; i< customer_geocodes.length;i++){
+        var marker = new google.maps.Marker({
+          position: customer_geocodes[i],
+          map: map,
+        });
+      }
+    }
+    </script>
+
+{% endblock %}

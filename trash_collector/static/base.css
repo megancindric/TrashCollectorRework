@@ -1,0 +1,10 @@
+.navbar{
+    padding-right: 1rem;
+    padding-left: 1rem;
+    background-color:teal;
+}
+
+.map {
+    height: 400px;
+    width: 500px;
+  }

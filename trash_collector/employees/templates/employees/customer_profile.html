@@ -1,0 +1,36 @@
+{% extends 'employees\employee_base.html' %}
+{% block script %} 
+ {% endblock %}
+
+{% block title %}Customer Profile{% endblock %}
+
+{% block content %}
+
+<h1>Address On File For {{customer.name}}:</h1>
+<p>{{customer.name}}'s Home Address & Zip Code: {{customer_full_address}}</p>
+<div id="map" class="map"></div>
+<a class="btn btn-sm btn-outline-success" href="{% url 'employees:index' %}">Return to Home</a>
+{% endblock %}
+
+{% block footercontent %}
+<script async
+src="https://maps.googleapis.com/maps/api/js?v=3&key=APIKEYHERE&callback=initMap">
+</script>
+<script>
+    function initMap() {
+
+    var lat_lng = { lat: {{cust_lat}}, lng: {{cust_long}} }
+    console.log(lat_lng)
+    var options = {
+          center: lat_lng,
+        zoom: 14
+    };
+      const map = new google.maps.Map(document.getElementById("map"), options);
+      const marker = new google.maps.Marker({
+        position: lat_lng,
+        map: map,
+      });
+    }
+    </script>
+
+{% endblock %}

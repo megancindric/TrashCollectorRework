@@ -1,0 +1,44 @@
+{% extends 'employees\employee_base.html' %}
+
+{% block title %}{% block header %} My Accounts: {% endblock %}{% endblock %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+
+  <form action ="{% url 'employees:my_accounts' %}", method="POST">
+    {% csrf_token %}
+    <label for="pickup_day">Filter by Pickup Day:</label>
+    <select name="pickup_day" id="pickup_day">
+        <option value="All">All</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+    </select>
+    <input type="submit" value="Filter">
+</form>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Zip Code</th>
+      <th>Pickup Day</th>
+    </tr>
+    {% for customer in matching_customers %}
+    <tr>
+      <td>{{customer.name}}</td>
+      <td>{{customer.zip_code}}</td>
+      <td>{{customer.weekly_pickup}}</td>
+
+    </tr>
+    {% endfor %}
+  </table>
+    {% for customer in matching_customers %}
+
+    {% endfor %}
+  {% else %}
+    <p>You are at the employee index, but you are not logged in.</p>
+    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'accounts:register' %}">Sign Up</a>
+  {% endif %}
+{% endblock %}
